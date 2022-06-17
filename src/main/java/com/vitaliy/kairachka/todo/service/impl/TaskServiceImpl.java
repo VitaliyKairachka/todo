@@ -1,6 +1,8 @@
 package com.vitaliy.kairachka.todo.service.impl;
 
 import com.vitaliy.kairachka.todo.model.entity.TaskEntity;
+import com.vitaliy.kairachka.todo.model.enums.tasks.Status;
+import com.vitaliy.kairachka.todo.model.mapper.TaskMapper;
 import com.vitaliy.kairachka.todo.repository.TaskRepository;
 import com.vitaliy.kairachka.todo.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
 
     @Override
     public TaskEntity getTaskById(Long id) {
@@ -45,7 +48,8 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskEntity updateTask(Long id, TaskEntity task) {
         TaskEntity target = this.getTaskById(id);
-        //TODO mapper
+        target = taskMapper.merge(task, target);
+        target.setStatus(Status.TODO);
         return taskRepository.save(target);
     }
 

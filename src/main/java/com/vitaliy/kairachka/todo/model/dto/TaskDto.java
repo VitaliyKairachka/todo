@@ -3,8 +3,9 @@ package com.vitaliy.kairachka.todo.model.dto;
 import com.vitaliy.kairachka.todo.model.enums.tasks.Priority;
 import com.vitaliy.kairachka.todo.model.enums.tasks.Status;
 import com.vitaliy.kairachka.todo.model.enums.tasks.Type;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,16 @@ import static jakarta.persistence.EnumType.STRING;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class TaskDto {
+    private Long id;
+
+    private Long version;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @NotBlank
+    @Size(max = 255)
     private String name;
 
     private String description;

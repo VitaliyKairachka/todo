@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.todo.controller;
 
 import com.vitaliy.kairachka.todo.model.dto.TaskDto;
+import com.vitaliy.kairachka.todo.model.mapper.TaskMapper;
 import com.vitaliy.kairachka.todo.service.impl.TaskServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import static org.springframework.http.HttpStatus.OK;
  *
  * @author Kairachka Vitaliy
  * @version 0.0.1-SNAPSHOT
- * @since 16.06.2022
+ * @since 17.06.2022
  */
 @RestController
 @RequiredArgsConstructor
@@ -28,11 +29,13 @@ import static org.springframework.http.HttpStatus.OK;
 public class TaskController {
     private static final String ID = "id";
     private final TaskServiceImpl taskService;
+    private final TaskMapper taskMapper;
 
     @GetMapping
     public ResponseEntity<Page<TaskDto>> getAll(@PageableDefault(size = 5) Pageable pageable) {
-        Page<TaskDto> users = taskService.getAllTasks(pageable)
-                .map();  //TODO mapper
+        Page<TaskDto> users = taskService
+                .getAllTasks(pageable)
+                .map(taskMapper::toResponse);
         return new ResponseEntity<>(users, OK);
     }
 
@@ -40,7 +43,7 @@ public class TaskController {
     public ResponseEntity<TaskDto> getUser(@PathVariable(ID) Long id) {
         TaskDto task = Optional.of(id)
                 .map(taskService::getTaskById)
-                .map()  //TODO mapper
+                .map(taskMapper::toResponse)
                 .orElseThrow();
         return new ResponseEntity<>(task, OK);
     }
@@ -48,9 +51,9 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<TaskDto> createUser(@RequestBody @Valid TaskDto task) {
         TaskDto taskDto = Optional.ofNullable(task)
-                .map()  //TODO mapper
+                .map(taskMapper::fromRequest)
                 .map(taskService::createTask)
-                .map()  //TODO mapper
+                .map(taskMapper::toResponse)
                 .orElseThrow();
         return new ResponseEntity<>(taskDto, CREATED);
     }
@@ -59,9 +62,9 @@ public class TaskController {
     public ResponseEntity<TaskDto> updateUser(@PathVariable(ID) Long id,
                                               @RequestBody @Valid TaskDto taskDto) {
         TaskDto taskResponse = Optional.ofNullable(taskDto)
-                .map(taskMapper::fromRequestUpdate)    //TODO mapper
+                .map(taskMapper::fromRequest)
                 .map(task -> taskService.updateTask(id, task))
-                .map(taskMapper::toResponse)    //TODO mapper
+                .map(taskMapper::toResponse)
                 .orElseThrow();
         return new ResponseEntity<>(taskResponse, OK);
     }

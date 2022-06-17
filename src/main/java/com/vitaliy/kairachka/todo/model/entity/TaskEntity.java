@@ -4,7 +4,6 @@ import com.vitaliy.kairachka.todo.model.enums.tasks.Priority;
 import com.vitaliy.kairachka.todo.model.enums.tasks.Status;
 import com.vitaliy.kairachka.todo.model.enums.tasks.Type;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
