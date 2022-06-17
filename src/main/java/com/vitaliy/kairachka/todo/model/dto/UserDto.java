@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import static jakarta.persistence.EnumType.STRING;
+
 /**
  * User data transfer object
  *
@@ -32,6 +34,6 @@ public class UserDto {
 
     private String email;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Role role;
 }

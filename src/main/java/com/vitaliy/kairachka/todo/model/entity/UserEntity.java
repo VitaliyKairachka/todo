@@ -1,15 +1,18 @@
 package com.vitaliy.kairachka.todo.model.entity;
 
 import com.vitaliy.kairachka.todo.model.enums.user.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
 
 /**
  * User entity
@@ -36,6 +39,9 @@ public class UserEntity extends BaseEntity {
 
     private String email;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Role role;
+
+    @ManyToMany(mappedBy = "users", fetch = LAZY)
+    private List<TaskEntity> tasks = new ArrayList<>();
 }

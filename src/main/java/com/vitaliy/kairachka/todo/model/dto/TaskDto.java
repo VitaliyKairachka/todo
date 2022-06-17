@@ -13,6 +13,8 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.EnumType.STRING;
+
 /**
  * Task data transfer object
  *
@@ -32,12 +34,12 @@ public class TaskDto {
 
     private LocalDateTime executionTime;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Type type;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Priority priority;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Status status;
 }
