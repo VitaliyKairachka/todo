@@ -1,6 +1,8 @@
 package com.vitaliy.kairachka.todo.service.impl;
 
 import com.vitaliy.kairachka.todo.model.entity.UserEntity;
+import com.vitaliy.kairachka.todo.model.enums.user.Role;
+import com.vitaliy.kairachka.todo.model.mapper.UserMapper;
 import com.vitaliy.kairachka.todo.repository.UserRepository;
 import com.vitaliy.kairachka.todo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public UserEntity getUserById(Long id) {
@@ -53,7 +56,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserEntity updateUser(Long id, UserEntity user) {
         UserEntity target = this.getUserById(id);
-        //TODO mapper
+        target = userMapper.merge(user, target);
+        target.setRole(Role.USER);
         return userRepository.save(target);
     }
 
