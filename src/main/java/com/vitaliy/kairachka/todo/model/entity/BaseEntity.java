@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
  * @version 0.0.1-SNAPSHOT
  * @since 16.06.2022
  */
-@Entity
 @MappedSuperclass
 @Getter
 @Setter
